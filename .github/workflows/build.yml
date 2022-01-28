@@ -1,0 +1,41 @@
+name: build
+on: [push, pull_request]
+jobs:
+  arduino-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: setup arduino
+      uses: arduino/setup-arduino-cli@v1.0.0
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    - name: install platform
+      run: |
+        arduino-cli core update-index
+        arduino-cli core install arduino:avr
+    - name: compile sketch
+      run: |
+        ls
+        arduino-cli core update-index --additional-urls https://arduino.esp8266.com/stable/package_esp8266com_index.json
+        arduino-cli core search esp8266
+        arduino-cli board listall
+        arduino-cli core install esp8266:esp8266@2.7.4
+        rm -f -r output
+        mkdir output
+        arduino-cli compile --fqbn esp8266:esp8266:d1_mini --output-dir output ./data
+        ls
+        cd output
+        ls
+        mv LED-Controller.ino.bin data.bin
+        rm LED-Controller.ino.map
+        rm LED-Controller.ino.elf
+        echo "END"
+        ls
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: "build"
+        files: output/data.bin
+                   
