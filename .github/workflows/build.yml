@@ -36,5 +36,5 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         title: "build"
-        files: output/data.bin
+        files: LED-Controller/output/data.bin
                    
