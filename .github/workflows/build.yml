@@ -16,21 +16,15 @@ jobs:
         arduino-cli core install arduino:avr
     - name: compile sketch
       run: |
-        ls
         arduino-cli core update-index
-        arduino-cli core search esp8266
         arduino-cli core install esp8266:esp8266@3.0.2
         cd LED-Controller
         mkdir output
         arduino-cli compile --fqbn esp8266:esp8266:d1_mini --output-dir output ./data
-        ls
         cd output
-        ls
         mv LED-Controller.ino.bin data.bin
         rm LED-Controller.ino.map
         rm LED-Controller.ino.elf
-        echo "END"
-        ls
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
