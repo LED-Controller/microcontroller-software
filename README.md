@@ -1,3 +1,4 @@
 # Software für den Microcontroller
 
-ESP8266 D1 Mini
+## Build
+Die Software wird automatisch gebaut: [data.bin](https://github.com/LED-Controller/microcontroller-software/releases/download/latest/data.bin)
