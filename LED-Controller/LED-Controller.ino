@@ -1,5 +1,5 @@
 #include "VERSION.h"
-#include "PRIVATE.h"
+#include "WIFI_CREDENTIALS.h"
 
 #include <ESP8266WiFi.h>
 
