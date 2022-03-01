@@ -6,7 +6,9 @@ WiFiClient client;
 unsigned long lastPing = millis();
 String uuid;
 
+#include "ColorManager.h"
 #include "DataHandler.h"
+
 
 
 
@@ -14,6 +16,9 @@ void setup() {
   uuid = WiFi.macAddress();
   
   Serial.begin(115200);
+
+  setupColorManager();
+  
   delay(1000);
 
   Serial.println("");
