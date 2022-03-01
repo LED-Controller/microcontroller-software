@@ -1,13 +1,14 @@
 #include "VERSION.h"
 #include "WIFI_CREDENTIALS.h"
-
 #include <ESP8266WiFi.h>
 
 WiFiClient client;
-const char* HOST = "192.168.21.25";
-const uint16_t PORT = 18533;
-
+unsigned long lastPing = millis();
 String uuid;
+
+#include "DataHandler.h"
+
+
 
 void setup() {
   uuid = WiFi.macAddress();
@@ -35,10 +36,7 @@ void setup() {
     client.print("REGISTER ");
     client.println(uuid);
   }
-
 }
-
-unsigned long lastPing = millis();
 
 void loop() {
   while(true) {
@@ -65,10 +63,7 @@ void loop() {
     }
     if(finish) {
       Serial.println(result);
-      if(result == "ping") {
-        client.println("pong");
-        lastPing = millis();
-      }
+      handleData(result);
     }
     yield();
   }
