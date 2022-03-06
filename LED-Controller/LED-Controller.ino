@@ -10,14 +10,11 @@ String uuid;
 #include "DataHandler.h"
 
 
-
-
 void setup() {
+  setupColorManager();
   uuid = WiFi.macAddress();
   
   Serial.begin(115200);
-
-  setupColorManager();
   
   delay(1000);
 
@@ -40,6 +37,8 @@ void setup() {
   if (client.connect(HOST, PORT)) {
     client.print("REGISTER ");
     client.println(uuid);
+  } else {
+    Serial.println("Server down?");
   }
 }
 
