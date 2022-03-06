@@ -1,3 +1,10 @@
+#include <Adafruit_NeoPixel.h>
+
+#define LED_COUNT 60
+#define LED_PIN    D4
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+
 #define STATUS_BLUE D3
 #define STATUS_RED D8
 #define STATUS_GREEN D7
@@ -23,7 +30,15 @@ void updateColor(int r, int g, int b, int w) {
   analogWrite(COLOR_W, w);
 }
 
-void setupColorManager() {
+void neoFill(int r, int g, int b) {
+  uint32_t color = strip.Color(r, g, b);
+  for(int i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, color);
+  }
+  strip.show();
+}
+
+void setupColorManager() {  
   pinMode(LED_BUILTIN, OUTPUT);
 
   pinMode(STATUS_BLUE, OUTPUT);
@@ -40,4 +55,9 @@ void setupColorManager() {
   pinMode(COLOR_W, OUTPUT);
 
   updateColor(0, 0, 0, 0);
+
+  strip.begin();
+  strip.show();
+  strip.setBrightness(50);
+  neoFill(0, 0, 0);
 }

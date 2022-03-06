@@ -43,11 +43,15 @@ void handleData(String data) {
     return;
   } else if(data == "OFF") {
     updateColor(0, 0, 0, 0);
+    neoFill(0, 0, 0);
     sendToServer("ok");
     return;
   } else if(data.startsWith("X1")) {
-    Serial.println("neopixel not supported yet");
-    sendToServer("nsy");
+    int rColor = split(data, 1).toInt();
+    int gColor = split(data, 2).toInt();
+    int bColor = split(data, 3).toInt();
+    neoFill(rColor, gColor, bColor);
+    sendToServer("ok");
     return;
   }
   sendToServer("error");

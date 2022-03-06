@@ -4,6 +4,9 @@
 
 WiFiClient client;
 void sendToServer(String data) {
+  Serial.print("Send to server: ");
+  Serial.println(data);
+  
   client.println(data);
   client.flush();
 }
@@ -43,8 +46,9 @@ void setup() {
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-
+  Serial.print("try to connect... ");
   if (client.connect(HOST, PORT)) {
+    Serial.println("OK");
     String registerSend = "REGISTER ";
     registerSend.concat(uuid);
     sendToServer(registerSend);
@@ -58,7 +62,6 @@ void loop() {
     Serial.println("timeout");
     ESP.restart();
   }
-
 
   if(client.available()) {
     boolean finish = false;
