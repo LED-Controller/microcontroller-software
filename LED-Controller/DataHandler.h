@@ -19,6 +19,7 @@ void handleData(String data) {
   if(data == "ping") {
     sendToServer("pong");
     lastPing = millis();
+    return;
   } else if(data.startsWith("F1")) {
     // F1 {r} {g} {b}
     int rColor = split(data, 1).toInt();
@@ -27,6 +28,7 @@ void handleData(String data) {
 
     updateColor(rColor, gColor, bColor, 0);
     sendToServer("ok");
+    return;
   } else if(data.startsWith("F2")) {
     // F1 {r} {g} {b} {w}
     int rColor = split(data, 1).toInt();
@@ -36,12 +38,15 @@ void handleData(String data) {
 
     updateColor(rColor, gColor, bColor, wColor);
     sendToServer("ok");
+    return;
   } else if(data == "OFF") {
     updateColor(0, 0, 0, 0);
     sendToServer("ok");
+    return;
   } else if(data.startsWith("X1")) {
     Serial.println("neopixel not supported yet");
     sendToServer("nsy");
+    return;
   }
   sendToServer("error");
 }
