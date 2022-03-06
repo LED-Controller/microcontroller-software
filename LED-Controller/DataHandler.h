@@ -1,18 +1,20 @@
-String split(String s, int index) {
-  char parser = ' ';
-  String rs="";
-  int parserIndex = index;
-  int parserCnt=0;
-  int rFromIndex=0, rToIndex=-1;
-  while (index >= parserCnt) {
-    rFromIndex = rToIndex+1;
-    rToIndex = s.indexOf(parser,rFromIndex);
-    if (index == parserCnt) {
-      if (rToIndex == 0 || rToIndex == -1) return "";
-      return s.substring(rFromIndex,rToIndex);
-    } else parserCnt++;
+String split(String data, int index) {
+  char separator = ' ';
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length() - 1;
+
+  for (int i = 0; i <= maxIndex && found <= index; i++) {
+    if (data.charAt(i) == separator || i == maxIndex) {
+      found++;
+      strIndex[0] = strIndex[1] + 1;
+      strIndex[1] = (i == maxIndex) ? i + 1 : i;
+    }
   }
-  return rs;
+
+  String result = found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+  result.trim();
+  return result;
 }
 
 void handleData(String data) {

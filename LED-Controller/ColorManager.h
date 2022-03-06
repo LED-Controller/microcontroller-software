@@ -8,6 +8,15 @@
 #define COLOR_W D5
 
 void updateColor(int r, int g, int b, int w) {
+  Serial.print("R: ");
+  Serial.print(r);
+  Serial.print(", G: ");
+  Serial.print(g);
+  Serial.print(", B: ");
+  Serial.print(b);
+  Serial.print(", W: ");
+  Serial.println(w);
+  
   analogWrite(COLOR_R, r);
   analogWrite(COLOR_G, g);
   analogWrite(COLOR_B, b);
