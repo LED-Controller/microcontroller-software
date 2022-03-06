@@ -20,6 +20,7 @@ jobs:
         arduino-cli core install esp8266:esp8266@3.0.2
         cd LED-Controller
         mkdir output
+        arduino-cli lib install "Adafruit NeoPixel"
         arduino-cli compile --fqbn esp8266:esp8266:d1_mini --output-dir output ./data
         cd output
         mv LED-Controller.ino.bin data.bin
