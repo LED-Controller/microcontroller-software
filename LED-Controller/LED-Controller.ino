@@ -3,11 +3,18 @@
 #include <ESP8266WiFi.h>
 
 WiFiClient client;
+void sendToServer(String data) {
+  client.println(data);
+  client.flush();
+}
+
 unsigned long lastPing = millis();
 String uuid;
 
 #include "ColorManager.h"
 #include "DataHandler.h"
+
+
 
 
 void setup() {
@@ -20,8 +27,11 @@ void setup() {
 
   Serial.println("");
   Serial.println("LED-Controller");
+
+  String nameHost = "LED-";
+  nameHost.concat(uuid);
  
-  WiFi.hostname("LED-Controller");
+  WiFi.hostname(nameHost);
   WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
  
   while (WiFi.status() != WL_CONNECTED) {
@@ -35,8 +45,9 @@ void setup() {
 
 
   if (client.connect(HOST, PORT)) {
-    client.print("REGISTER ");
-    client.println(uuid);
+    String registerSend = "REGISTER ";
+    registerSend.concat(uuid);
+    sendToServer(registerSend);
   } else {
     Serial.println("Server down?");
   }
