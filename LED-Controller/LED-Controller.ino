@@ -17,22 +17,18 @@ String uuid;
 #include "ColorManager.h"
 #include "DataHandler.h"
 
-
-
-
 void setup() {
   setupColorManager();
   uuid = WiFi.macAddress();
   
-  Serial.begin(115200);
-  
   delay(1000);
-
-  Serial.println("");
-  Serial.println("LED-Controller");
 
   String nameHost = "LED-";
   nameHost.concat(uuid);
+  
+  Serial.begin(115200);
+  Serial.println("");
+  Serial.println(nameHost);
  
   WiFi.hostname(nameHost);
   WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
@@ -49,7 +45,7 @@ void setup() {
   Serial.print("try to connect... ");
   if (client.connect(HOST, PORT)) {
     Serial.println("OK");
-    String registerSend = "REGISTER ";
+    String registerSend = "REG ";
     registerSend.concat(uuid);
     sendToServer(registerSend);
   } else {
@@ -85,5 +81,4 @@ void loop() {
     }
     yield();
   }
-
 }

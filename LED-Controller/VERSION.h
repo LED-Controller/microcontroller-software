@@ -1,1 +1,1 @@
-#define S_VERSION F("0.0.2")
+#define S_VERSION F("0.0.3")
