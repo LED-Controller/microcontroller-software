@@ -17,6 +17,14 @@ String uuid;
 #include "ColorManager.h"
 #include "DataHandler.h"
 
+
+void error(String msg) {
+  Serial.println(msg);
+  fillStatus(STATUS_RED);
+  delay(2000);
+  ESP.restart();
+}
+
 void setup() {
   setupColorManager();
   uuid = WiFi.macAddress();
@@ -32,11 +40,14 @@ void setup() {
  
   WiFi.hostname(nameHost);
   WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
- 
+
+  fadeIn(STATUS_BLUE);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
     Serial.print(".");
+    fadeOut(STATUS_BLUE);
+    fadeIn(STATUS_BLUE);
   }
+  
   Serial.println("WiFi connected");
  
   Serial.print("IP address: ");
@@ -49,14 +60,15 @@ void setup() {
     registerSend.concat(uuid);
     sendToServer(registerSend);
   } else {
-    Serial.println("Server down?");
+    error("Server down");
   }
 }
 
 void loop() {
+  colorLoop();
+  
   if((millis() - lastPing) > (75 * 1000)) {
-    Serial.println("timeout");
-    ESP.restart();
+    error("timeout");
   }
 
   if(client.available()) {

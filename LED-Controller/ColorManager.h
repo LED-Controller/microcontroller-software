@@ -40,7 +40,7 @@ void neoFill(int r, int g, int b) {
 
 void setupColorManager() {  
   pinMode(LED_BUILTIN, OUTPUT);
-
+  
   pinMode(STATUS_BLUE, OUTPUT);
   pinMode(STATUS_RED, OUTPUT);
   pinMode(STATUS_GREEN, OUTPUT);
@@ -60,4 +60,61 @@ void setupColorManager() {
   strip.show();
   strip.setBrightness(50);
   neoFill(0, 0, 0);
+}
+
+void fadeIn(int port) {
+  for(int i = 0; i < 100; i++) {
+    analogWrite(port, i);
+    delay(5);
+  }
+}
+
+void fadeOut(int port) {
+  for(int i = 100; i > 0; i--) {
+    analogWrite(port, i);
+    delay(5);
+  }
+}
+
+void clearStatus() {
+  digitalWrite(STATUS_BLUE, LOW);
+  digitalWrite(STATUS_RED, LOW);
+  digitalWrite(STATUS_GREEN, LOW);
+}
+
+void fillStatus(int port) {
+  clearStatus();
+  digitalWrite(port, HIGH);
+}
+
+unsigned long welcome = 0;
+
+void welcomeColor() {
+  fillStatus(STATUS_GREEN);
+  welcome = millis();
+}
+
+void colorLoop() {
+  if(welcome != 0) {
+    if((millis() - welcome) > 2000) {
+      welcome = 0;
+      if(digitalRead(STATUS_GREEN) == HIGH) {
+        clearStatus();
+      }
+    }
+  }
+}
+
+void testColors() {
+  for(int i = 0; i < 20; i++) {
+    digitalWrite(STATUS_BLUE, HIGH);
+    delay(100);
+    digitalWrite(STATUS_BLUE, LOW);
+    digitalWrite(STATUS_RED, HIGH);
+    delay(100);
+    digitalWrite(STATUS_RED, LOW);
+    digitalWrite(STATUS_GREEN, HIGH);
+    delay(100);
+    digitalWrite(STATUS_GREEN, LOW);
+  }
 }

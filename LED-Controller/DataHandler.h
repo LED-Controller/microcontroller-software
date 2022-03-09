@@ -53,6 +53,13 @@ void handleData(String data) {
     neoFill(rColor, gColor, bColor);
     sendToServer("ok");
     return;
+  } else if(data.startsWith("TEST")) {
+    sendToServer("ok");
+    testColors();
+    return;
+  } else if(data == "welcome") {
+    welcomeColor();
+    return;
   }
   sendToServer("error");
 }
