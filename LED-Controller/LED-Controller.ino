@@ -37,6 +37,16 @@ void setup() {
   Serial.begin(115200);
   Serial.println("");
   Serial.println(nameHost);
+
+  pinMode(D0, INPUT);
+  if(digitalRead(D0) == HIGH) {
+    Serial.println("BTN!");
+    updateColor(255, 255, 255, 255);
+    while(true) {
+      testColors();
+      yield();
+    }
+  }
  
   WiFi.hostname(nameHost);
   WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
