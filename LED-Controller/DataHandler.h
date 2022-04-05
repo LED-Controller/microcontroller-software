@@ -27,7 +27,7 @@ void handleData(String data) {
     int rColor = split(data, 1).toInt();
     int gColor = split(data, 2).toInt();
     int bColor = split(data, 3).toInt();
-
+    disableEffect();
     updateColor(rColor, gColor, bColor, 0);
     sendToServer("ok");
     return;
@@ -37,11 +37,12 @@ void handleData(String data) {
     int gColor = split(data, 2).toInt();
     int bColor = split(data, 3).toInt();
     int wColor = split(data, 4).toInt();
-
+    disableEffect();
     updateColor(rColor, gColor, bColor, wColor);
     sendToServer("ok");
     return;
   } else if(data == "OFF") {
+    disableEffect();
     updateColor(0, 0, 0, 0);
     neoFill(0, 0, 0);
     sendToServer("ok");
@@ -50,6 +51,7 @@ void handleData(String data) {
     int rColor = split(data, 1).toInt();
     int gColor = split(data, 2).toInt();
     int bColor = split(data, 3).toInt();
+    disableEffect();
     neoFill(rColor, gColor, bColor);
     sendToServer("ok");
     return;
@@ -59,6 +61,10 @@ void handleData(String data) {
     return;
   } else if(data == "welcome") {
     welcomeColor();
+    return;
+  } else if(data.startsWith("EFFECT")) {
+    activateEffect(split(data, 1));
+    sendToServer("ok");
     return;
   }
   sendToServer("error");

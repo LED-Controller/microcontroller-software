@@ -2,6 +2,8 @@
 #include "WIFI_CREDENTIALS.h"
 #include <ESP8266WiFi.h>
 
+#define BUTTON D0
+
 WiFiClient client;
 void sendToServer(String data) {
   Serial.print("Send to server: ");
@@ -15,8 +17,8 @@ unsigned long lastPing = millis();
 String uuid;
 
 #include "ColorManager.h"
+#include "EffectManager.h"
 #include "DataHandler.h"
-
 
 void error(String msg) {
   Serial.println(msg);
@@ -38,8 +40,8 @@ void setup() {
   Serial.println("");
   Serial.println(nameHost);
 
-  pinMode(D0, INPUT);
-  if(digitalRead(D0) == HIGH) {
+  pinMode(BUTTON, INPUT);
+  if(digitalRead(BUTTON) == HIGH) {
     Serial.println("BTN!");
     updateColor(255, 255, 255, 255);
     while(true) {
@@ -76,6 +78,7 @@ void setup() {
 
 void loop() {
   colorLoop();
+  effectLoop();
   
   if((millis() - lastPing) > (75 * 1000)) {
     error("timeout");
