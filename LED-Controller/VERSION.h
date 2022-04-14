@@ -1,1 +1,1 @@
-#define S_VERSION F("0.0.5-effect")
+#define S_VERSION F("0.0.6-rainbow")

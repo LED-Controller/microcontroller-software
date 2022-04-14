@@ -18,6 +18,33 @@ void effect_NormalParty() {
   }
 }
 
+
+long firstPixelHue = 0;
+unsigned long looping = 0;
+
+void effect_Rainbow() {
+  if((millis() - looping) > 5) {
+    looping = millis();
+  } else {
+    return;
+  }
+  
+  if(firstPixelHue < 5*65536) {
+    firstPixelHue += 256;
+  } else {
+    firstPixelHue = 0;
+  }
+  
+  for(int i = 0; i<strip.numPixels(); i++) {
+    int pixelHue = firstPixelHue + (i * 65536L / strip.numPixels());
+    strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+  }
+  
+  strip.show();
+}
+
+
+
 void effectLoop() {
   if(currentEffect == "null") {
     return;
@@ -25,5 +52,7 @@ void effectLoop() {
 
   if(currentEffect == "NORMAL_PARTY") {
     effect_NormalParty();
+  } else if(currentEffect == "RAINBOW") {
+    effect_Rainbow();
   }
 }
