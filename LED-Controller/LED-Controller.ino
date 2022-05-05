@@ -5,10 +5,11 @@
 #define BUTTON D0
 
 WiFiClient client;
+
 void sendToServer(String data) {
   Serial.print("Send to server: ");
   Serial.println(data);
-  
+
   client.println(data);
   client.flush();
 }
@@ -19,6 +20,7 @@ String uuid;
 #include "ColorManager.h"
 #include "EffectManager.h"
 #include "DataHandler.h"
+#include "TestMode.h"
 
 void error(String msg) {
   Serial.println(msg);
@@ -42,39 +44,41 @@ void setup() {
 
   pinMode(BUTTON, INPUT);
   if(digitalRead(BUTTON) == HIGH) {
-    Serial.println("BTN!");
-    updateColor(255, 255, 255, 255);
-    while(true) {
-      testColors();
-      yield();
+    Serial.println("TEST-MODE");
+    WiFi.mode(WIFI_OFF);
+  
+    testColors();
+    yield();
+    updateColor(255, 0, 0, 0);
+    runTestMode();
+  } else {
+    WiFi.hostname(nameHost);
+    WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
+
+    fadeIn(STATUS_BLUE);
+    while (WiFi.status() != WL_CONNECTED) {
+      Serial.print(".");
+      fadeOut(STATUS_BLUE);
+      fadeIn(STATUS_BLUE);
+    }
+    
+    Serial.println("WiFi connected");
+   
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+  
+    Serial.print("try to connect... ");
+    if (client.connect(HOST, PORT)) {
+      Serial.println("OK");
+      String registerSend = "REG ";
+      registerSend.concat(uuid);
+      sendToServer(registerSend);
+    } else {
+      error("Server down");
     }
   }
- 
-  WiFi.hostname(nameHost);
-  WiFi.begin(S_WIFI_SSID, S_WIFI_PASS);
-
-  fadeIn(STATUS_BLUE);
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    fadeOut(STATUS_BLUE);
-    fadeIn(STATUS_BLUE);
-  }
-  
-  Serial.println("WiFi connected");
- 
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  Serial.print("try to connect... ");
-  if (client.connect(HOST, PORT)) {
-    Serial.println("OK");
-    String registerSend = "REG ";
-    registerSend.concat(uuid);
-    sendToServer(registerSend);
-  } else {
-    error("Server down");
-  }
 }
+
 
 void loop() {
   colorLoop();

@@ -23,7 +23,7 @@ long firstPixelHue = 0;
 unsigned long looping = 0;
 
 void effect_Rainbow() {
-  if((millis() - looping) > 5) {
+  if((millis() - looping) > 50) {
     looping = millis();
   } else {
     return;
